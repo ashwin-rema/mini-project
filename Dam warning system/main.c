@@ -80,6 +80,7 @@ void file_print_struct(d dam)
 void warning_system(d dam)
 {
     int num;
+    //Singal messages
     char signal_1[10] = {" GREEN"};
     char signal_2[10] = {" ORANGE!"};
     char signal_3[10] = {" YELLOW!!"};
