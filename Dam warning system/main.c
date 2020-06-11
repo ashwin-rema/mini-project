@@ -75,3 +75,55 @@ void file_print_struct(d dam)
     fprintf(ftr,"\n\n%s%lf\n\n","Rainfall: ",dam.rainfall);
     fclose(ftr);
 }
+
+//Warning System
+void warning_system(d dam)
+{
+    int num;
+    char signal_1[10] = {" GREEN"};
+    char signal_2[10] = {" ORANGE!"};
+    char signal_3[10] = {" YELLOW!!"};
+    char signal_4[10] = {" RED!!!!"};
+    char signal_5[30] = {" WRONG INFORMATION GIVEN"};
+    char msg_1[30] = {" No need to panic"};
+    char msg_2[50] = {" Take extreme precaution and steps necessary"};
+    char msg_3[50] = {" Prepare for evacuation immediately"};
+    char msg_4[70] = {" Alert!! Evacuate immediately"};
+    char msg_5[70] = {" KINDLY ENTER CORRECT INFORMATION TO PROCESS THE WARNING\n\n"};
+    if(dam.water_level <= (0.7 * dam.dam_height))
+    {
+	file_print(signal_1, msg_1);
+	num = 1;
+	evacuation_instructions(num);
+	breaking_force(dam);
+    }
+    else if((dam.water_level > (0.7 * dam.dam_height)) && (dam.water_level <= (0.85 * dam.dam_height)))
+    {
+	file_print(signal_2, msg_2);
+	num = 2;
+	evacuation_instructions(num);
+	breaking_force(dam);
+    }
+    else if((dam.water_level > (0.85 * dam.dam_height)) && (dam.water_level <= (0.9 * dam.dam_height)))
+    {
+	file_print(signal_3, msg_3);
+	num = 3;
+	evacuation_instructions(num);
+	breaking_force(dam);
+    }   
+    else if((dam.water_level > (0.9 * dam.dam_height)) && (dam.water_level <= dam.dam_height))
+    {
+	file_print(signal_4, msg_4);
+	num = 4;
+	evacuation_instructions(num);
+	breaking_force(dam);
+    }
+    else 
+    {
+        file_print(signal_5, msg_5);
+    }
+}
+
+
+
+
