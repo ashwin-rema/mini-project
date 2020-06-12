@@ -12,6 +12,12 @@ typedef struct dam_records
     double rainfall;
 }d;
 
+void breaking_force(d);
+void warning_system(d);
+void file_print_struct(d);
+void file_print(char *a, char *b);
+void evacuation_instructions(int);
+
 //This function is used to convey the suggested instructions to be followed according to the given parameters.
 void evacuation_instructions(int num)
 {
@@ -57,6 +63,29 @@ void evacuation_instructions(int num)
     {
 	printf("\n");
     }
+}
+//Storing the warning message and signal in the file for future reference
+void file_print(char *a, char *b)
+{
+      FILE *ftr;
+      ftr=fopen("records.txt","a");
+      printf("\n%s",a);
+      printf("\n%s",b);
+      fprintf(ftr,"\n%s",a);
+      fprintf(ftr,"\n%s",b);
+      fclose(ftr);
+}
+//Calculating the breaking force of the dam and storing it in the file for future reference.
+void breaking_force(d dam)
+{
+    FILE *ftr;
+    ftr=fopen("records.txt","a");
+    char des[30]={"The breaking force is: "};
+    double dam_force= dam.dam_width * dam.dam_height * dam.dam_length * density * acceleration;
+    printf("\n\n\n The breaking force is: %lf\n\n\n",dam_force);
+    fprintf(ftr,"\n\n%s",des);
+    fprintf(ftr," %lf\n\n",dam_force);
+    fclose(ftr);
 }
 
 //Storing the entered details of the dam in a file for future reference.
