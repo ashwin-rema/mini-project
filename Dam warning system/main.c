@@ -13,11 +13,12 @@ typedef struct flood_system
     double init_height;
 }m;
 
-void breaking_force(d);
-void warning_system(d);
-void file_print_struct(d);
-void file_print(char *a, char *b);
-void evacuation_instructions(int);
+int capacity(m dam);
+double calculate(m dam, double shut_height);
+int decision(m dam, double flow_out);
+void cond(int check, int flag, int y);
+void file_print_struct(m dam, int n);
+
 
 //This function is used to convey the suggested instructions to be followed according to the given parameters.
 void evacuation_instructions(int num)
@@ -65,31 +66,40 @@ void evacuation_instructions(int num)
 	printf("\n");
     }
 }
-//Storing the warning message and signal in the file for future reference
-void file_print(char *a, char *b)
+
+//Function to check if the dam capacity is below the threshold capacity
+
+int capacity(m dam)
 {
-      FILE *ftr;
-      ftr=fopen("records.txt","a");
-      printf("\n%s",a);
-      printf("\n%s",b);
-      fprintf(ftr,"\n%s",a);
-      fprintf(ftr,"\n%s",b);
-      fclose(ftr);
+    double cap = dam.lat_area*dam.water_level;
+    if(cap>dam.threshold)
+        return 1;
+    else
+        return 0;
 }
-//Calculating the breaking force of the dam and storing it in the file for future reference.
-void breaking_force(d dam)
+
+//Function to calculate the outward flow of water in the dam
+
+double calculate(m dam, double shut_height)
 {
-    FILE *ftr;
-    ftr=fopen("records.txt","a");
-    char des[30]={"The breaking force is: "};
-    double dam_force= dam.dam_width * dam.dam_height * dam.dam_length * density * acceleration;
-    printf("\n\n\n The breaking force is: %lf\n\n\n",dam_force);
-    fprintf(ftr,"\n\n%s",des);
-    fprintf(ftr," %lf\n\n",dam_force);
-    fclose(ftr);
+    double velocity = sqrt((2*g*shut_height));
+    double area = dam.width * shut_height;
+    return (area * velocity);
+}
+
+//Function to check whether the dam is safe from breaking due to the inward flow of water
+
+int decision(m dam, double flow_out)
+{
+    double dh = (dam.flow_in - flow_out)/dam.lat_area;
+    if(dh > dam.init_height)
+        return 1;
+    else
+        return 0;
 }
 
 //Function to store the entered details of the dam in a file for future reference
+
 void file_print_struct(m dam, int n)
 {
     FILE *fptr;
@@ -113,6 +123,7 @@ void file_print_struct(m dam, int n)
     //Closing the file
     fclose(fptr);                            
 }
+
 //Warning System
 void warning_system(d dam)
 {
