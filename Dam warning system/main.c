@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #define g 9.8
 
 //Creating a structure variable to store several dam details.
@@ -43,11 +42,11 @@ double square_root(double number)
         // (on second iteration = 65)
         // and so on
         temp = sqt;
-
-
+	
+	sqt = (n / 2*temp)/2;
         // Then, replace values (256 / 128)
     }
-	
+    return sqt;	
 }
 //Function to check whether the dam and its surrounding area is safe from flooding
 
@@ -229,3 +228,75 @@ int main()
         cond(check, flag, y);
         y = y + 1;
 
+	while(2)
+        {
+            if(check==0 && flag==0 && y!=0)                     //Checking if signal is GREEN
+                {
+                    FILE *file;
+                    
+                    file = fopen("records.txt", "a");           //Opening the file called 'records'
+                    
+                    printf("\nAt time t = %d hours \nSignal = GREEN", y);
+                    printf("\nThe dam and its surrounding area is safe from flooding now and no need to evacuate the people from neighbouring areas. \nAnd no need to panic.");
+                    fprintf(file, "\nAt time t=%d hours signal=GREEN", y);
+                    fprintf(file, "\nThe dam and its surrounding area is safe from flooding now and no need to evacuate the people from neighbouring areas.And no need to panic");
+                    
+                    fclose(file);                               //Closing the file
+                    
+                    exit(0);
+                }
+
+            else
+                {
+                           ftr = fopen("records.txt","a");                              //Opening the file called 'records'
+
+                           printf("\n\nRise the shutter further to raise the outward flow in the dam ");
+                           fprintf(ftr,"\n\nRise the shutter further to raise the outward flow in the dam ");
+
+                           printf("\n\n1.Continue the program.");                       //Menu
+                           printf("\n2.Exit the program immediately.");
+                           printf("\n\nEnter any one of the above values: ");
+                           
+                           scanf("%d",&num);
+                           
+                           if(num == 2)
+                           {
+                               fprintf(file,"\n\nProgram finished.");
+                               fclose(file);
+                               exit(0);                                                 //Exiting the program 
+                           }    
+                           else
+                           {
+                               printf("\n\nEnter the amount by which the shutter in the dam is to be risen: ");     
+                               scanf("%lf",&shut_height);                               //Input for shutter height 
+
+
+                               fprintf(ftr,"\n\nEnter the amount by which the shutter in the dam is to be risen: %lf",shut_height);
+
+
+                               flow_out = calculate(dam[i], shut_height);               //Calculating the outward flow
+                               printf("\nEnter the current water level in the dam in SI units:");
+                               scanf("%lf",&dam[i].water_level);                        //Input for water level
+                               printf("\n\n");
+
+                               fprintf(ftr,"\nEnter the current water level in the dam in SI units: %lf\n\n",dam[i].water_level);
+
+                               //Checking the capacity 
+                               check = capacity(dam[i]);
+                               
+                               //Getting the decision required
+                               flag = decision(dam[i], flow_out);
+
+                               cond(check, flag, y);
+                               y = y + 1;
+
+                               fclose(ftr);                             //Closing the file
+                            }
+
+                    }
+
+           }
+    }
+
+    return 0;
+}
