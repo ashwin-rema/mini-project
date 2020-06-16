@@ -1,16 +1,17 @@
 #define density 2400
 #define acceleration 10
+
 //Creating a structure variable to store several dam details.
-typedef struct dam_records
+typedef struct flood_system
 {
-    char dam_name[30];
-    double dam_height;
-    double dam_width;
-    double dam_length;
+    char name[30];
+    double threshold;
+    double lat_area;
+    double flow_in;
+    double width;
     double water_level;
-    double river_length;
-    double rainfall;
-}d;
+    double init_height;
+}m;
 
 void breaking_force(d);
 void warning_system(d);
@@ -88,23 +89,30 @@ void breaking_force(d dam)
     fclose(ftr);
 }
 
-//Storing the entered details of the dam in a file for future reference.
-void file_print_struct(d dam)
+//Function to store the entered details of the dam in a file for future reference
+void file_print_struct(m dam, int n)
 {
-    FILE *ftr;
-    ftr=fopen("records.txt","a");
-    char description[40]={"\t\t\t\t\t\tRecords of dam maintenance\n\n"};
-    fprintf(ftr,"%s",description);
-    fprintf(ftr,"\n\n%s%s","Name: ",dam.dam_name);
-    fprintf(ftr,"\n\n%s%lf","Height: ",dam.dam_height);
-    fprintf(ftr,"\n\n%s%lf","Width: ",dam.dam_width);
-    fprintf(ftr,"\n\n%s%lf","Length: ",dam.dam_length);
-    fprintf(ftr,"\n\n%s%lf","Water level: ",dam.water_level);
-    fprintf(ftr,"\n\n%s%lf","River length: ",dam.river_length);
-    fprintf(ftr,"\n\n%s%lf\n\n","Rainfall: ",dam.rainfall);
-    fclose(ftr);
-}
+    FILE *fptr;
 
+    //Opening the file called 'records'
+    fptr = fopen("records.txt","a");            
+
+    fprintf(fptr, "\t\t\t\t\t\tReport\n\n");
+    fprintf(fptr, "\t\t\t\t\tEarly Warning Flood System\n\n\n");
+
+    fprintf(fptr, "\n\nThe number of dams in the system that are being monitored : %d", n);
+
+    fprintf(fptr, "\n\nThe name of the dam : %s", dam.name);
+    fprintf(fptr, "\n\nThe threshold capacity of the dam in SI units : %lf", dam.threshold);
+    fprintf(fptr, "\n\nThe lateral area of the contact surface in SI units : %lf", dam.lat_area);
+    fprintf(fptr, "\n\nThe inward flow in the dam in SI units : %lf", dam.flow_in);
+    fprintf(fptr, "\n\nThe width of the dam_shutter in SI units : %lf", dam.width);
+    fprintf(fptr, "\n\nThe critical height of the dam in SI units : %lf", dam.init_height);
+    fprintf(fptr, "\n\nThe water level in the dam in SI units : %lf", dam.water_level);
+
+    //Closing the file
+    fclose(fptr);                            
+}
 //Warning System
 void warning_system(d dam)
 {
